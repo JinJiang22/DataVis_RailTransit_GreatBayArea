@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Greater Bay Area on Track</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href='Subway_styles.css' rel='stylesheet' />
+</head>
+
+<body>
+
+<div id='map'></div>
+
+
+<div class='map-overlay top'>
+<div class='map-overlay-inner'>
+        <h2>Greater Bay Area on Track</h2>
+
+         
+</div>
+</div>
+    
+    
+<div class='map-overlay-bottom'>
+    <div class='button'>
+    <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro off</span></button>
+    <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail off</span></button>
+    <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail off</span></button>
+        </div>
+    <div class="container">
+  
+  <div class="range-slider">
+    <span id="year" class="rs-label">2030</span>
+    <input id="slider" class="rs-range" type="range" value="2030" min="1980" max="2030">
+  </div>
+    </div>
+    
+    <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">sources</a></p>
+</div>
+    
+<script>
+    
+    var rangeSlider = document.getElementById("slider");
+    var rangeBullet = document.getElementById("year");
+
+rangeSlider.addEventListener("input", showSliderValue, false);
+    
+function showSliderValue() {
+  rangeBullet.innerHTML = rangeSlider.value;
+  rangeBullet.style.left = ((2030-rangeSlider.value) * -1.83 + 95.4) + "%";
+}
+
+</script>
+
+
+
+<script>
+    
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGFudGVjaGVuMDgyNSIsImEiOiJjbGQxbGhhOTExaXBuM250Z2d6MWhzMnloIn0.EEsuGRqk0Uj_e1Q90WqPfQ'; // Put your Mapbox Public Access token here
+
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/dantechen0825/clhkm4u2i01mf01qy2qaj4bf1', // style location
+    center: [113.5, 22.8], // starting position [lng, lat]
+    zoom: 7.8 // starting zoom
+    });
+    
+    map.addControl(new mapboxgl.NavigationControl());
+
+
+
+
+
+    map.on('load', function() {
+        
+        const layers = map.getStyle().layers;
+        // Find the index of the first symbol layer in the map style.
+        let firstSymbolId;
+        for (const layer of layers) {
+            if (layer.type === 'symbol') {
+                firstSymbolId = layer.id;
+                break;
+            }
+        }
+       
+        map.addLayer({
+            id: 'bayarea',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.9hm1prda' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'bayarea-av4uhk', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible',
+                        
+                    },
+                    paint: {
+                        'line-color': 'black',
+                        'line-opacity' : 0.6
+                    },
+            
+            firstSymbolId   
+            
+        }); 
+
+
+        map.addLayer({
+                    id: 'Subway_test',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Subway1-azy4ec', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'blue',
+                        'line-width':2
+                    }
+                  },
+                      firstSymbolId   
+                    );
+
+        // Add the hoverlight line layer which is empty initially
+
+        map.addLayer({
+                id: 'IntercityRail_test',
+                type: 'line',
+                source: {
+                    type: 'vector',
+                    url: 'mapbox://dantechen0825.ce2ryvum' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'IntercityRail_05151-3qoxff', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                paint: {
+                    'line-color': 'orange',
+                    'line-width':2
+                }
+                },
+                    firstSymbolId   );
+            
+        map.addLayer({
+                    id: 'HighspeedRail_test',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.94vpl16f' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'HighspeedRail_05151-d9z4dt', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'red',
+                        'line-width':3
+                    }
+                  },
+                      firstSymbolId   );
+
+
+            // Add the proportional circle layer to the map
+            map.addLayer({
+                    id: 'Subway_stations_test',
+                    type: 'circle',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.4qo4zx9g' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Subway_stations_0515-5wz60y', // name of tilesets
+
+                    'layout': {
+                        'visibility': 'visible',
+                    },
+                    
+                    paint: {
+                        'circle-color': 'blue',
+                        'circle-opacity': 0.95,
+                        'circle-stroke-width': {
+                    stops: [[9, 0], [10, 2], [16, 3]]
+                    },
+                        'circle-stroke-color': '#000',
+                        'circle-stroke-opacity': 1,
+                        'circle-radius': {stops: [[10, 0], [11, 3], [14, 4], [18, 8]]},
+                            },
+                
+                  },
+                      firstSymbolId   );
+
+            // Add metro stations' name label  
+            map.addLayer({
+                'id': 'stations_label',
+                'type': 'symbol',
+                'source': {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.4qo4zx9g' // Your Mapbox tileset Map ID
+                    },
+                'source-layer': 'Subway_stations_0515-5wz60y', // name of tilesets
+                'layout': {
+                // get the title name from the source's "title" property
+                'text-field': ['get', 'station'],
+                'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+                ],
+                // 'text-offset': [0, 1.0],
+                'text-radial-offset': 1,
+                'text-justify': 'auto',
+                // add stops to scale font sizes in ems
+                'text-size': {stops: [[10, 0],[15, 30]]},
+                'text-anchor': 'top'
+                },
+                'paint': {'text-color': '#4e4e4e'},
+            });         
+        
+        
+         // Add the proportional circle layer to the map
+            map.addLayer({
+                    id: 'IntercityRail_stations_test',
+                    type: 'circle',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.6qg02fyk' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'IntercityRail_stations_05151-cynyea', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'circle-color': 'orange',
+                        'circle-opacity': 0.95,
+                        'circle-stroke-width': {
+                    stops: [[9, 0], [10, 2], [16, 3]]
+                    },
+                        'circle-stroke-color': '#000',
+                        'circle-stroke-opacity': 1,
+                        'circle-radius': {stops: [[10, 0], [11, 3], [14, 4], [18, 8]]},
+                            }
+                  },
+                      firstSymbolId   );
+        
+
+            // Add the proportional circle layer to the map
+            map.addLayer({
+                    id: 'HighspeedRail_stations_test',
+                    type: 'circle',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.csprwhc5' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'HSR_stations3-7krlog', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'circle-color': 'red',
+                        'circle-opacity': 0.95,
+                        'circle-stroke-width': {
+                    stops: [[7, 0], [9, 2], [14, 3]]
+                    },
+                        'circle-stroke-color': '#000',
+                        'circle-stroke-opacity': 1,
+                        'circle-radius': {stops: [[8, 0], [9, 3], [12, 4], [16, 8]]},
+                            }
+                  },
+                      firstSymbolId   );
+      
+ 
+            map.addLayer({
+                id: 'Subway_lines_hoverlight',  
+                type: 'line',
+                source: {
+                    type: 'vector',
+                    url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'Subway1-azy4ec', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                paint: {
+                    'line-color': 'yellow',
+                    // 'line-opacity': 0.8,
+                    'line-width':3
+                },
+                filter: ['==','name','empty']
+                },
+                    firstSymbolId   
+                );  
+            
+
+        
+            // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
+            document.getElementById('slider').addEventListener('input', function(e) {
+
+                document.getElementById('year').textContent = parseInt(e.target.value); 
+                
+                map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('stations_label', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('Subway_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('IntercityRail_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('IntercityRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('HighspeedRail_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('HighspeedRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
+                });
+        
+        
+        
+        
+        document.getElementById('metro').addEventListener('click', () => {
+            
+            if (map.getLayoutProperty('Subway_test', 'visibility') === 'visible') {
+            map.setLayoutProperty('Subway_test', 'visibility', 'none');
+            map.setLayoutProperty('Subway_stations_test', 'visibility', 'none')
+        } else {
+            map.setLayoutProperty('Subway_test','visibility','visible');
+            map.setLayoutProperty('Subway_stations_test', 'visibility', 'visible')
+        } 
+        }); 
+
+        
+        document.getElementById('inter-city').addEventListener('click', () => {
+            
+            if (map.getLayoutProperty('IntercityRail_test', 'visibility') === 'visible') {
+            map.setLayoutProperty('IntercityRail_test', 'visibility', 'none');
+            map.setLayoutProperty('IntercityRail_stations_test', 'visibility', 'none')
+        } else {
+            map.setLayoutProperty('IntercityRail_test','visibility','visible');
+            map.setLayoutProperty('IntercityRail_stations_test', 'visibility', 'visible')
+        } 
+        }); 
+        
+        
+        
+        document.getElementById('CRH').addEventListener('click', () => {
+            
+            if (map.getLayoutProperty('HighspeedRail_test', 'visibility') === 'visible') {
+            map.setLayoutProperty('HighspeedRail_test', 'visibility', 'none');
+            map.setLayoutProperty('HighspeedRail_stations_test', 'visibility', 'none');
+        } else {
+            map.setLayoutProperty('HighspeedRail_test','visibility','visible');
+            map.setLayoutProperty('HighspeedRail_stations_test','visibility','visible');
+        } 
+        }); 
+
+// Hover Popup 
+    function processPopup(elementIds) {
+        for (var i = 0; i < elementIds.length; i++) {
+            var id = elementIds[i]
+
+            // Perform operations on the element
+            // Create a popup for subway line
+            const popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+                
+                map.on('mouseenter', id, (e) => {
+                    
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+                    
+                    // Copy coordinates of the mouse.
+                    const coordinates = e.lngLat;
+                    const description = "<strong>" + e.features[0].properties.name + "</strong>" + "<br> This segment of the line started operating in "  + e.features[0].properties.time + ".";
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+                    
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+                    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+                });
+                
+                map.on('mouseleave', id, () => {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                }); 
+        }
+    };
+
+        var ids = ['Subway_test', 'IntercityRail_test', 'HighspeedRail_test'];
+        processPopup(ids);
+
+        
+// Hover Highlight
+    function processHL(elementIds1, elementIds2) {
+        for (var i = 0; i < elementIds1.length; i++) {
+                var id1 = elementIds1[i];
+                var id2 = elementIds2[i]
+
+                    
+            map.on('mouseenter', id1, (e) => {
+                        
+                        // Highlight the subway line
+                        map.setFilter(id2, ['==','name',e.features[0].properties.name]); 
+                    });
+                    
+                    // when mouse leaves the layer, update the filter so no features are highlighted
+            map.on('mouseleave', id1, () => {
+                map.setFilter(id2, ['==','name','empty']);
+            });
+    
+        }
+    };
+
+    var ids1 = ['Subway_test'];
+    var ids2 = ['Subway_lines_hoverlight'];
+    processHL(ids1, ids2);
+        
+});
+
+
+</script>   
+    
+
+
+    
+
+</body>
+</html>
