@@ -197,7 +197,7 @@ p.credit {
   position: relative;
   overflow: hidden;
   border: 1px solid #18181a;
-  color: #ffffff;
+  color: blue;
   display: inline-block;
   font-family: 'Optima';
   font-size: 15px;
@@ -205,7 +205,7 @@ p.credit {
   padding: 18px 18px 17px;
   text-decoration: none;
   cursor: pointer;
-  background: blue;
+  background: rgb(255, 255, 255);
   user-select: none;
   margin-top: 5px;
   -webkit-user-select: none;
@@ -264,7 +264,7 @@ p.credit {
     position: relative;
     overflow: hidden;
     border: 1px solid #18181a;
-    color: #ffffff;
+    color: orange;
     display: inline-block;
     font-family: 'Optima';
     font-size: 15px;
@@ -272,7 +272,7 @@ p.credit {
     padding: 18px 18px 17px;
     text-decoration: none;
     cursor: pointer;
-    background: orange;
+    background: rgb(255, 255, 255);
     user-select: none;
     margin-top: 5px;
     -webkit-user-select: none;
@@ -329,7 +329,7 @@ p.credit {
   position: relative;
   overflow: hidden;
   border: 1px solid #18181a;
-  color: #ffffff;
+  color: red;
   display: inline-block;
   font-family: 'Optima';
   font-size: 15px;
@@ -337,7 +337,7 @@ p.credit {
   padding: 18px 18px 17px;
   text-decoration: none;
   cursor: pointer;
-  background: red;
+  background: rgb(255, 255, 255);
   user-select: none;
   margin-top: 5px;
   -webkit-user-select: none;

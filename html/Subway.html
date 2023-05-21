@@ -25,9 +25,9 @@
     
 <div class='map-overlay-bottom'>
     <div class='button'>
-    <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro off</span></button>
-    <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail off</span></button>
-    <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail off</span></button>
+    <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro on/off</span></button>
+    <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail on/off</span></button>
+    <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail on/off</span></button>
         </div>
     <div class="container">
   
@@ -127,8 +127,8 @@ function showSliderValue() {
                       firstSymbolId   
                     );
 
-        // Add the hoverlight line layer which is empty initially
 
+// Intercity rail stations  
         map.addLayer({
                 id: 'IntercityRail_test',
                 type: 'line',
@@ -146,7 +146,7 @@ function showSliderValue() {
                 }
                 },
                     firstSymbolId   );
-            
+           
         map.addLayer({
                     id: 'HighspeedRail_test',
                     type: 'line',
@@ -164,8 +164,8 @@ function showSliderValue() {
                     }
                   },
                       firstSymbolId   );
-
-
+        
+// subway stations
             // Add the proportional circle layer to the map
             map.addLayer({
                     id: 'Subway_stations_test',
@@ -205,12 +205,11 @@ function showSliderValue() {
                 'source-layer': 'Subway_stations_0515-5wz60y', // name of tilesets
                 'layout': {
                 // get the title name from the source's "title" property
-                'text-field': ['get', 'station'],
+                'text-field': ['concat', ['get', 'station'], '\n', ['get', 'time']],
                 'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
                 ],
-                // 'text-offset': [0, 1.0],
                 'text-radial-offset': 1,
                 'text-justify': 'auto',
                 // add stops to scale font sizes in ems
@@ -218,8 +217,7 @@ function showSliderValue() {
                 'text-anchor': 'top'
                 },
                 'paint': {'text-color': '#4e4e4e'},
-            });         
-        
+            });  
         
          // Add the proportional circle layer to the map
             map.addLayer({
@@ -245,7 +243,30 @@ function showSliderValue() {
                             }
                   },
                       firstSymbolId   );
-        
+            // Add IntercityRail stations' name label  
+            map.addLayer({
+                'id': 'ICR_stations_label',
+                'type': 'symbol',
+                'source': {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.6qg02fyk' // Your Mapbox tileset Map ID
+                    },
+                'source-layer': 'IntercityRail_stations_05151-cynyea', // name of tilesets
+                'layout': {
+                // get the title name from the source's "title" property
+                'text-field': ['concat', ['get', 'time'], '\n', ['get', 'name']],
+                'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+                ],
+                'text-radial-offset': 1,
+                'text-justify': 'auto',
+                // add stops to scale font sizes in ems
+                'text-size': {stops: [[10, 0],[15, 30]]},
+                'text-anchor': 'top'
+                },
+                'paint': {'text-color': '#4e4e4e'},
+            });  
 
             // Add the proportional circle layer to the map
             map.addLayer({
@@ -271,8 +292,32 @@ function showSliderValue() {
                             }
                   },
                       firstSymbolId   );
-      
- 
+            map.addLayer({
+                'id': 'HSR_stations_label',
+                'type': 'symbol',
+                'source': {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.csprwhc5' // Your Mapbox tileset Map ID
+                    },
+                'source-layer': 'HSR_stations3-7krlog', // name of tilesets
+                'layout': {
+                // get the title name from the source's "title" property
+                'text-field': ['concat', ['get', 'time'], '\n', ['get', 'name']],
+                'text-font': [
+                'Open Sans Semibold',
+                'Arial Unicode MS Bold'
+                ],
+                // 'text-offset': [0, 1.0],
+                'text-radial-offset': 1,
+                'text-justify': 'auto',
+                // add stops to scale font sizes in ems
+                'text-size': {stops: [[10, 0],[15, 30]]},
+                'text-anchor': 'top'
+                },
+                'paint': {'text-color': '#4e4e4e'},
+            }); 
+
+//  Hoverlight layer
             map.addLayer({
                 id: 'Subway_lines_hoverlight',  
                 type: 'line',
@@ -287,13 +332,50 @@ function showSliderValue() {
                 paint: {
                     'line-color': 'yellow',
                     // 'line-opacity': 0.8,
-                    'line-width':3
+                    'line-width': 3
                 },
                 filter: ['==','name','empty']
                 },
                     firstSymbolId   
                 );  
+
+            map.addLayer({
+                id: 'IntercityRail_lines_highlight',
+                type: 'line',
+                source: {
+                    type: 'vector',
+                    url: 'mapbox://dantechen0825.ce2ryvum' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'IntercityRail_05151-3qoxff', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                paint: {
+                    'line-color': 'orange',
+                    'line-width': 5
+                },
+                filter: ['==','name','empty']
+                },
+                    firstSymbolId   );
             
+            map.addLayer({
+                    id: 'HighspeedRail_lines_highlight',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.94vpl16f' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'HighspeedRail_05151-d9z4dt', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'red',
+                        'line-width': 5
+                    },
+                filter: ['==','name','empty']
+                  },
+                      firstSymbolId   );
 
         
             // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
@@ -368,7 +450,7 @@ function showSliderValue() {
                     
                     // Copy coordinates of the mouse.
                     const coordinates = e.lngLat;
-                    const description = "<strong>" + e.features[0].properties.name + "</strong>" + "<br> This segment of the line started operating in "  + e.features[0].properties.time + ".";
+                    const description = "<strong>" + e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
                     // over the copy being pointed to.
@@ -397,15 +479,13 @@ function showSliderValue() {
         for (var i = 0; i < elementIds1.length; i++) {
                 var id1 = elementIds1[i];
                 var id2 = elementIds2[i]
-
-                    
+        
             map.on('mouseenter', id1, (e) => {
-                        
-                        // Highlight the subway line
-                        map.setFilter(id2, ['==','name',e.features[0].properties.name]); 
-                    });
+            // Highlight the subway line
+                map.setFilter(id2, ['==','name',e.features[0].properties.name]); 
+            });
                     
-                    // when mouse leaves the layer, update the filter so no features are highlighted
+            // when mouse leaves the layer, update the filter so no features are highlighted
             map.on('mouseleave', id1, () => {
                 map.setFilter(id2, ['==','name','empty']);
             });
@@ -414,9 +494,30 @@ function showSliderValue() {
     };
 
     var ids1 = ['Subway_test'];
+    // var ids1 = ['Subway_test', 'IntercityRail_test', 'HighspeedRail_test'];
     var ids2 = ['Subway_lines_hoverlight'];
+    // var ids2 = ['Subway_lines_hoverlight','IntercityRail_lines_highlight','HighspeedRail_lines_highlight'];
     processHL(ids1, ids2);
-        
+       
+    
+    map.on('mouseenter', 'IntercityRail_test', (e) => {                    
+        // Highlight the subway line
+        map.setFilter('IntercityRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
+    });               
+    // when mouse leaves the layer, update the filter so no features are highlighted
+    map.on('mouseleave', 'IntercityRail_test', () => {
+        map.setFilter('IntercityRail_lines_highlight', ['==','name','empty']);
+    });
+
+    map.on('mouseenter', 'HighspeedRail_test', (e) => {                    
+        // Highlight the subway line
+        map.setFilter('HighspeedRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
+    });                
+    // when mouse leaves the layer, update the filter so no features are highlighted
+    map.on('mouseleave', 'HighspeedRail_test', () => {
+        map.setFilter('HighspeedRail_lines_highlight', ['==','name','empty']);
+    });
+
 });
 
 
