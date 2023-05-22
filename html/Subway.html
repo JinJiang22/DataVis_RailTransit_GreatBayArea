@@ -24,11 +24,20 @@
     
     
 <div class='map-overlay-bottom'>
+
     <div class='button'>
     <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro on/off</span></button>
     <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail on/off</span></button>
     <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail on/off</span></button>
-        </div>
+   
+    <tr><td><p class="cityfly"> Zoom to:   
+        <a href="#" class="citylink" id="gz">Guangzhou</a> &nbsp;
+        <a href="#" class="citylink" id="sz">Shenzhen</a> &nbsp;
+        <a href="#" class="citylink" id="hk">Hongkong</a> &nbsp;
+        <a href="#" class="citylink" id="mc">Macao</a></p>
+     </td></tr>
+    </div>
+
     <div class="container">
   
   <div class="range-slider">
@@ -38,6 +47,8 @@
     </div>
     
     <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">sources</a></p>
+        
+       
 </div>
     
 <script>
@@ -127,6 +138,28 @@ function showSliderValue() {
                       firstSymbolId   
                     );
 
+    // add a invisible layer for mouse detect
+
+        map.addLayer({
+                    id: 'Subway_mousedetect',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Subway1-azy4ec', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'white',
+                        'line-opacity': 0,
+                        'line-width': 15
+                    },
+                // filter: ['==','name','empty']
+                  },
+                      firstSymbolId   
+                    );
 
 // Intercity rail stations  
         map.addLayer({
@@ -159,7 +192,7 @@ function showSliderValue() {
                         'visibility': 'visible'
                     },
                     paint: {
-                        'line-color': 'red',
+                        'line-color': '#b20000',
                         'line-width':3
                     }
                   },
@@ -200,12 +233,12 @@ function showSliderValue() {
                 'type': 'symbol',
                 'source': {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.4qo4zx9g' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.cnrgs8f7' // Your Mapbox tileset Map ID
                     },
-                'source-layer': 'Subway_stations_0515-5wz60y', // name of tilesets
+                'source-layer': 'Subway_stations_0521-9qvpng', // name of tilesets
                 'layout': {
                 // get the title name from the source's "title" property
-                'text-field': ['concat', ['get', 'station'], '\n', ['get', 'time']],
+                'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'station']],
                 'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
@@ -330,7 +363,7 @@ function showSliderValue() {
                     'visibility': 'visible'
                 },
                 paint: {
-                    'line-color': 'yellow',
+                    'line-color': '#00DFFF',
                     // 'line-opacity': 0.8,
                     'line-width': 3
                 },
@@ -351,7 +384,7 @@ function showSliderValue() {
                     'visibility': 'visible'
                 },
                 paint: {
-                    'line-color': 'orange',
+                    'line-color': 'YELLOW',
                     'line-width': 5
                 },
                 filter: ['==','name','empty']
@@ -370,7 +403,7 @@ function showSliderValue() {
                         'visibility': 'visible'
                     },
                     paint: {
-                        'line-color': 'red',
+                        'line-color': '#ff0000',
                         'line-width': 5
                     },
                 filter: ['==','name','empty']
@@ -470,7 +503,7 @@ function showSliderValue() {
         }
     };
 
-        var ids = ['Subway_test', 'IntercityRail_test', 'HighspeedRail_test'];
+        var ids = ['Subway_mousedetect', 'IntercityRail_test', 'HighspeedRail_test'];
         processPopup(ids);
 
         
@@ -493,7 +526,7 @@ function showSliderValue() {
         }
     };
 
-    var ids1 = ['Subway_test'];
+    var ids1 = ['Subway_mousedetect'];
     // var ids1 = ['Subway_test', 'IntercityRail_test', 'HighspeedRail_test'];
     var ids2 = ['Subway_lines_hoverlight'];
     // var ids2 = ['Subway_lines_hoverlight','IntercityRail_lines_highlight','HighspeedRail_lines_highlight'];
@@ -520,6 +553,29 @@ function showSliderValue() {
 
 });
 
+// FLY TO
+// Event listener for the zoom to buttons created using a for loop and switch case statement to set lat and long
+var x = document.getElementsByClassName('citylink');
+var i;
+		for (i = 0; i < x.length; i++) {
+			x[i].addEventListener('click', function(e) {
+
+				var lat,long;
+
+				switch(e.target.id) {
+					case "gz": long=113.258057; lat=23.127731; break;
+					case "sz": long=114.03; lat=22.550611; break;
+					case "hk": long=114.158936; lat=22.281472; break;
+					case "mc": long=113.560867; lat=22.161653; break;
+				}
+
+				map.flyTo({
+					center: [long,lat],
+					zoom: 10,
+					speed: 0.5,
+					});
+			});
+		}
 
 </script>   
     
