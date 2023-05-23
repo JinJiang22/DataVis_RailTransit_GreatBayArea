@@ -23,6 +23,19 @@
     margin-bottom: 10px;
 }
 
+.map-overlay-mid {
+    position: absolute;
+    /* width: 10%; */
+    height: 10%;
+    bottom: 20%;
+    left: 0;
+
+    background: rgba(0, 0, 0, 0);
+    border-radius: 3px;
+    padding: 30px;
+    margin-bottom: 0px;
+    display: flex;
+}
 
 .map-overlay-bottom {
     position: absolute;
@@ -31,7 +44,6 @@
     bottom: 0;
     left: 0;
     
-
     background: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     padding: 30px;
@@ -193,18 +205,10 @@ p.credit {
     box-shadow:none;
 }
 
-/* .map-overlay-bottom .cityfly {
-    position: absolute;
-    width: 100%;
-    height: 10%;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 1px;
-    margin-bottom: 0px;
-    display: flex;
-    flex-direction: column;
-} */
+.map-overlay-bottom .cityfly {
+    font: 14px;
+    font-family: 'Optima';
+}
 
 
 /* CSS */
@@ -216,6 +220,7 @@ p.credit {
   display: inline-block;
   font-family: 'Optima';
   font-size: 15px;
+  font-weight: bold;
   line-height: 15px;
   padding: 18px 18px 17px;
   text-decoration: none;
@@ -283,6 +288,7 @@ p.credit {
     display: inline-block;
     font-family: 'Optima';
     font-size: 15px;
+    font-weight: bold;
     line-height: 15px;
     padding: 18px 18px 17px;
     text-decoration: none;
@@ -347,7 +353,8 @@ p.credit {
   color: red;
   display: inline-block;
   font-family: 'Optima';
-  font-size: 15px;
+  font-size: 15px;  
+  font-weight: bold;
   line-height: 15px;
   padding: 18px 18px 17px;
   text-decoration: none;

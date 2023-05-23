@@ -6,6 +6,10 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <!--D3.js-->
+    <script charset="utf-8" src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+
     <link href='Subway_styles.css' rel='stylesheet' />
 </head>
 
@@ -22,7 +26,29 @@
 </div>
 </div>
     
-    
+<div class='map-overlay-mid'> 
+    <div class="miles"> <p> <strong>Metro Mileage</strong>  </p>
+    <table>
+        <tr>
+            <th>City</th>
+            <th>Miles</th>
+        </tr>
+        <tr>
+            <td>Guangzhou</td>
+            <td id="gz_mileage"> aaa </td>
+        </tr>
+        <tr>
+            <td>Shenzhen</td>
+            <td id="sz_mileage"> aaa </td>
+        </tr>
+        <tr>
+            <td>Hongkong</td>
+            <td id="hk_mileage"> aaa </td>
+        </tr>
+    </table>
+    </div>
+</div>   
+
 <div class='map-overlay-bottom'>
 
     <div class='button'>
@@ -30,12 +56,14 @@
     <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail on/off</span></button>
     <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail on/off</span></button>
    
+    <!-- <table> -->
     <tr><td><p class="cityfly"> Zoom to:   
         <a href="#" class="citylink" id="gz">Guangzhou</a> &nbsp;
         <a href="#" class="citylink" id="sz">Shenzhen</a> &nbsp;
         <a href="#" class="citylink" id="hk">Hongkong</a> &nbsp;
         <a href="#" class="citylink" id="mc">Macao</a></p>
      </td></tr>
+    <!-- </table> -->
     </div>
 
     <div class="container">
@@ -175,7 +203,7 @@ function showSliderValue() {
                 },
                 paint: {
                     'line-color': 'orange',
-                    'line-width':2
+                    'line-width': 3
                 }
                 },
                     firstSymbolId   );
@@ -192,8 +220,8 @@ function showSliderValue() {
                         'visibility': 'visible'
                     },
                     paint: {
-                        'line-color': '#b20000',
-                        'line-width':3
+                        'line-color': 'red',
+                        'line-width': 3
                     }
                   },
                       firstSymbolId   );
@@ -410,11 +438,87 @@ function showSliderValue() {
                   },
                       firstSymbolId   );
 
-        
+
+            // Mileage data 🥲
+            // Notes: shouldn't have space between the comma and the next word!
+                const csvData = `key,city1,city2,city3
+1980,35.69,54.11,35.69
+1981,28.67,55.11,28.67
+1982,31.22,56.11,31.22
+1983,-23.55,57.11,-23.55
+1984,19.43,58.11,19.43
+1985,23.71,59.11,23.71
+1986,30.04,60.11,30.04
+1987,39.91,61.11,39.91
+1988,19.07,62.11,19.07
+1989,34.68,63.11,34.68
+1990,40.72,35.69,40.72
+1991,24.91,28.67,24.91
+1992,29.56,31.22,29.56
+1993,41.01,-23.55,41.01
+1994,-34.61,19.43,-34.61
+1995,22.53,23.71,22.53
+1996,6.45,30.04,6.45
+1997,-4.33,39.91,-4.33
+1998,14.6,19.07,14.6
+1999,39.11,34.68,39.11
+2000,41.01,40.72,41.01
+2001,-34.61,24.91,-34.61
+2002,22.53,29.56,22.53
+2003,6.45,41.01,6.45
+2004,-4.33,-34.61,-4.33
+2005,14.6,22.53,14.6
+2006,39.11,6.45,39.11
+2007,40.11,-4.33,40.11
+2008,41.11,14.6,41.11
+2009,42.11,39.11,42.11
+2010,43.11,41.01,43.11
+2011,44.11,-34.61,44.11
+2012,45.11,22.53,45.11
+2013,46.11,6.45,46.11
+2014,47.11,-4.33,47.11
+2015,48.11,14.6,48.11
+2016,49.11,39.11,49.11
+2017,50.11,40.11,50.11
+2018,51.11,41.11,51.11
+2019,52.11,42.11,52.11
+2020,53.11,43.11,53.11
+2021,54.11,44.11,54.11
+2022,55.11,45.11,55.11
+2023,56.11,46.11,56.11
+2024,57.11,47.11,57.11
+2025,58.11,48.11,58.11
+2026,59.11,49.11,59.11
+2027,60.11,50.11,60.11
+2028,61.11,51.11,61.11
+2029,62.11,52.11,62.11
+2030,63.11,53.11,63.11`;
+                
+                // Parse the CSV data
+                const parsedData = Papa.parse(csvData, { header: true }).data;
+                console.log(parsedData);
+                // Convert to dictionary
+                const dictionary = {};
+                parsedData.forEach(row => {
+                const key = row.key;
+                const values = Object.keys(row).filter(k => k !== 'key').map(k => row[k]);
+                dictionary[key] = values;
+                });
+
+                const data = dictionary;
+
+                // let data = d3.csv("./data.csv"[[, row], callback])         
+
+
+
             // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
             document.getElementById('slider').addEventListener('input', function(e) {
 
                 document.getElementById('year').textContent = parseInt(e.target.value); 
+                
+                document.getElementById('gz_mileage').textContent = parseFloat(data[e.target.value][0]) + 'km'; 
+                document.getElementById('sz_mileage').textContent = parseFloat(data[e.target.value][1]) + 'km'; 
+                document.getElementById('hk_mileage').textContent = parseFloat(data[e.target.value][2]) + 'km'; 
                 
                 map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('stations_label', ['<=', 'time', parseInt(e.target.value)]);
