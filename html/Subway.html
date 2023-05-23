@@ -8,8 +8,12 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
     <!--D3.js-->
     <script charset="utf-8" src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- papa parse -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
-
+    <!-- node.js -->
+    <script src="https://unpkg.com/node-waves/dist/waves.min.js"></script>    
+    <!-- danfo.js -->
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
     <link href='Subway_styles.css' rel='stylesheet' />
 </head>
 
@@ -25,25 +29,25 @@
          
 </div>
 </div>
-    
+<input type="file" id="file" name="file">
 <div class='map-overlay-mid'> 
-    <div class="miles"> <p> <strong>Metro Mileage</strong>  </p>
-    <table>
+    <div id="miles"> <p> <strong>Metro Mileage</strong>  </p>
+    <table >
         <tr>
             <th>City</th>
             <th>Miles</th>
         </tr>
         <tr>
             <td>Guangzhou</td>
-            <td id="gz_mileage"> aaa </td>
+            <td id="gz_mileage"> 904+ km </td>
         </tr>
         <tr>
             <td>Shenzhen</td>
-            <td id="sz_mileage"> aaa </td>
+            <td id="sz_mileage"> 1165 km</td>
         </tr>
         <tr>
             <td>Hongkong</td>
-            <td id="hk_mileage"> aaa </td>
+            <td id="hk_mileage"> 73+ km </td>
         </tr>
     </table>
     </div>
@@ -58,7 +62,7 @@
    
     <!-- <table> -->
     <tr><td><p class="cityfly"> Zoom to:   
-        <a href="#" class="citylink" id="gz">Guangzhou</a> &nbsp;
+        <a href="#" class="citylink" id="gz">Guangzhou&Foshan</a> &nbsp;
         <a href="#" class="citylink" id="sz">Shenzhen</a> &nbsp;
         <a href="#" class="citylink" id="hk">Hongkong</a> &nbsp;
         <a href="#" class="citylink" id="mc">Macao</a></p>
@@ -74,7 +78,7 @@
   </div>
     </div>
     
-    <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">sources</a></p>
+    <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">Amap</a>, <a href="https://github.com/gboeing/osmnx">OSM</a>, <a href="https://github.com/GZUPA/Subway-traffic-data-set-of-mainland-China">GZUPA</a> <br> Note: Railway lines after 2023 are not shown in the map. Metro mileage data from government planning documents and is for illustrative use only. </p> 
         
        
 </div>
@@ -152,9 +156,9 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.aetc2mv3' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'Subway1-azy4ec', // name of tilesets
+                    'source-layer': 'Subway_0523-08g5d7', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -166,38 +170,14 @@ function showSliderValue() {
                       firstSymbolId   
                     );
 
-    // add a invisible layer for mouse detect
-
-        map.addLayer({
-                    id: 'Subway_mousedetect',
-                    type: 'line',
-                    source: {
-                      type: 'vector',
-                      url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
-                    },
-                    'source-layer': 'Subway1-azy4ec', // name of tilesets
-                    'layout': {
-                        'visibility': 'visible'
-                    },
-                    paint: {
-                        'line-color': 'white',
-                        'line-opacity': 0,
-                        'line-width': 15
-                    },
-                // filter: ['==','name','empty']
-                  },
-                      firstSymbolId   
-                    );
-
-// Intercity rail stations  
         map.addLayer({
                 id: 'IntercityRail_test',
                 type: 'line',
                 source: {
                     type: 'vector',
-                    url: 'mapbox://dantechen0825.ce2ryvum' // Your Mapbox tileset Map ID
+                    url: 'mapbox://dantechen0825.8d33hb11' // Your Mapbox tileset Map ID
                 },
-                'source-layer': 'IntercityRail_05151-3qoxff', // name of tilesets
+                'source-layer': 'ICR_0523-8f8t72', // name of tilesets
                 'layout': {
                     'visibility': 'visible'
                 },
@@ -213,19 +193,59 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.94vpl16f' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HighspeedRail_05151-d9z4dt', // name of tilesets
+                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
                     paint: {
-                        'line-color': 'red',
+                        'line-color': '#ff5349',
+                        // #FF2226 近255  FF5733太橘
                         'line-width': 3
                     }
                   },
                       firstSymbolId   );
-        
+
+// add a invisible layer for mouse detect
+     map.addLayer({
+                    id: 'Subway_mousedetect',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.aetc2mv3' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Subway_0523-08g5d7', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'white',
+                        'line-opacity': 0,
+                        'line-width': 15
+                    },
+                // filter: ['==','name','empty']
+                  },
+                      firstSymbolId   
+                    );
+    map.addLayer({
+                    id: 'HSR_mousedetect',
+                    type: 'line',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'line-color': 'white',
+                        'line-opacity': 0,
+                        'line-width': 20
+                    },
+                  },
+                      firstSymbolId   );      
 // subway stations
             // Add the proportional circle layer to the map
             map.addLayer({
@@ -286,9 +306,9 @@ function showSliderValue() {
                     type: 'circle',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.6qg02fyk' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.097u9l8m' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'IntercityRail_stations_05151-cynyea', // name of tilesets
+                    'source-layer': 'IntercityRail_stations_0523-0wzskw', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -304,18 +324,19 @@ function showSliderValue() {
                             }
                   },
                       firstSymbolId   );
+
             // Add IntercityRail stations' name label  
             map.addLayer({
                 'id': 'ICR_stations_label',
                 'type': 'symbol',
                 'source': {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.6qg02fyk' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.097u9l8m' // Your Mapbox tileset Map ID
                     },
-                'source-layer': 'IntercityRail_stations_05151-cynyea', // name of tilesets
+                'source-layer': 'IntercityRail_stations_0523-0wzskw', // name of tilesets
                 'layout': {
                 // get the title name from the source's "title" property
-                'text-field': ['concat', ['get', 'time'], '\n', ['get', 'name']],
+                'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'name']],
                 'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
@@ -335,9 +356,9 @@ function showSliderValue() {
                     type: 'circle',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.csprwhc5' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.ag3s8cnt' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HSR_stations3-7krlog', // name of tilesets
+                    'source-layer': 'HSR_stations_0523-763n9x', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -358,12 +379,12 @@ function showSliderValue() {
                 'type': 'symbol',
                 'source': {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.csprwhc5' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.ag3s8cnt' // Your Mapbox tileset Map ID
                     },
-                'source-layer': 'HSR_stations3-7krlog', // name of tilesets
+                'source-layer': 'HSR_stations_0523-763n9x', // name of tilesets
                 'layout': {
                 // get the title name from the source's "title" property
-                'text-field': ['concat', ['get', 'time'], '\n', ['get', 'name']],
+                'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'name']],
                 'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
@@ -384,9 +405,9 @@ function showSliderValue() {
                 type: 'line',
                 source: {
                     type: 'vector',
-                    url: 'mapbox://dantechen0825.aj49aajt' // Your Mapbox tileset Map ID
+                    url: 'mapbox://dantechen0825.aetc2mv3' // Your Mapbox tileset Map ID
                 },
-                'source-layer': 'Subway1-azy4ec', // name of tilesets
+                'source-layer': 'Subway_0523-08g5d7', // name of tilesets
                 'layout': {
                     'visibility': 'visible'
                 },
@@ -412,7 +433,8 @@ function showSliderValue() {
                     'visibility': 'visible'
                 },
                 paint: {
-                    'line-color': 'YELLOW',
+                    'line-color': '#FFD700',
+                    // BURNT ORANGE — HEX #cc5500
                     'line-width': 5
                 },
                 filter: ['==','name','empty']
@@ -424,14 +446,14 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.94vpl16f' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HighspeedRail_05151-d9z4dt', // name of tilesets
+                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
                     paint: {
-                        'line-color': '#ff0000',
+                        'line-color': 'red',
                         'line-width': 5
                     },
                 filter: ['==','name','empty']
@@ -439,60 +461,65 @@ function showSliderValue() {
                       firstSymbolId   );
 
 
-            // Mileage data 🥲
-            // Notes: shouldn't have space between the comma and the next word!
-                const csvData = `key,city1,city2,city3
-1980,35.69,54.11,35.69
-1981,28.67,55.11,28.67
-1982,31.22,56.11,31.22
-1983,-23.55,57.11,-23.55
-1984,19.43,58.11,19.43
-1985,23.71,59.11,23.71
-1986,30.04,60.11,30.04
-1987,39.91,61.11,39.91
-1988,19.07,62.11,19.07
-1989,34.68,63.11,34.68
-1990,40.72,35.69,40.72
-1991,24.91,28.67,24.91
-1992,29.56,31.22,29.56
-1993,41.01,-23.55,41.01
-1994,-34.61,19.43,-34.61
-1995,22.53,23.71,22.53
-1996,6.45,30.04,6.45
-1997,-4.33,39.91,-4.33
-1998,14.6,19.07,14.6
-1999,39.11,34.68,39.11
-2000,41.01,40.72,41.01
-2001,-34.61,24.91,-34.61
-2002,22.53,29.56,22.53
-2003,6.45,41.01,6.45
-2004,-4.33,-34.61,-4.33
-2005,14.6,22.53,14.6
-2006,39.11,6.45,39.11
-2007,40.11,-4.33,40.11
-2008,41.11,14.6,41.11
-2009,42.11,39.11,42.11
-2010,43.11,41.01,43.11
-2011,44.11,-34.61,44.11
-2012,45.11,22.53,45.11
-2013,46.11,6.45,46.11
-2014,47.11,-4.33,47.11
-2015,48.11,14.6,48.11
-2016,49.11,39.11,49.11
-2017,50.11,40.11,50.11
-2018,51.11,41.11,51.11
-2019,52.11,42.11,52.11
-2020,53.11,43.11,53.11
-2021,54.11,44.11,54.11
-2022,55.11,45.11,55.11
-2023,56.11,46.11,56.11
-2024,57.11,47.11,57.11
-2025,58.11,48.11,58.11
-2026,59.11,49.11,59.11
-2027,60.11,50.11,60.11
-2028,61.11,51.11,61.11
-2029,62.11,52.11,62.11
-2030,63.11,53.11,63.11`;
+        // Mileage data 🥲
+        // Notes: shouldn't have space between the comma and the next word!
+                const csvData = `key,guangzhou,shenzhen,Hongkong,gz_stations,sz_stations
+1980,0,0,16,0,0
+1981,0,0,16,0,0
+1982,0,0,28,0,0
+1983,0,0,28,0,0
+1984,0,0,28,0,0
+1985,0,0,39,0,0
+1986,0,0,41,0,0
+1987,0,0,41,0,0
+1988,0,0,41,0,0
+1989,0,0,44,0,0
+1990,0,0,44,0,0
+1991,0,0,44,0,0
+1992,0,0,44,0,0
+1993,0,0,44,0,0
+1994,0,0,44,0,0
+1995,0,0,44,0,0
+1996,0,0,44,0,0
+1997,5,0,44,5,0
+1998,5,0,44,5,0
+1999,18,0,44,16,0
+2000,18,0,44,16,0
+2001,18,0,45,16,0
+2002,27,0,53,25,0
+2003,37,0,53,32,0
+2004,37,21,53,32,19
+2005,59,21,56,44,19
+2006,111,21,56,62,19
+2007,116,22,56,64,20
+2008,116,22,56,64,20
+2009,150,25,60,89,23
+2010,236,66,60,144,51
+2011,236,178,60,144,131
+2012,236,178,60,144,131
+2013,260,178,60,164,131
+2014,260,178,63,164,131
+2015,260,178,63,164,131
+2016,266,285,73,169,198
+2017,391,285,73,231,198
+2018,475,285,73,257,198
+2019,515,303,73,271,215
+2020,531,411,73,282,283
+2021,589,419,73,290,288
+2022,621,547,73,304,369
+2023,706,626,73,355,391
+2024,808,652,73+,424,404
+2025,823,736,73+,430,455
+2026,823,924,73+,430,484
+2027,904,924,73+,449,484
+2028,904+,930,73+,,488
+2029,904+,930+,73+,,
+2030,904+,1165,73+,,642
+2031,904+,1165+,,,
+2032,904+,1165+,,,
+2033,904+,1165+,,,
+2034,904+,1165+,,,
+2035,2029,1165+,,,`;
                 
                 // Parse the CSV data
                 const parsedData = Papa.parse(csvData, { header: true }).data;
@@ -506,27 +533,53 @@ function showSliderValue() {
                 });
 
                 const data = dictionary;
+// // danfo.js
+// const dfd = require("danfojs-node")
 
-                // let data = d3.csv("./data.csv"[[, row], callback])         
+// dfd.readCSV("./data.csv") //assumes file is in CWD
+//   .then(df => {
+  
+//    df.head().print()
+
+//   }).catch(err=>{
+//      console.log(err);
+//   })
+//   console.log(df)
 
 
+    // inputFile.addEventListener("change", async () => {
+    //     const csvFile = inputFile.files[0]
+    //     dfd.readCSV(csvFile).then((df) => {
+    //         df.print()
+    //     })
+    // })
 
             // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
             document.getElementById('slider').addEventListener('input', function(e) {
 
                 document.getElementById('year').textContent = parseInt(e.target.value); 
-                
-                document.getElementById('gz_mileage').textContent = parseFloat(data[e.target.value][0]) + 'km'; 
-                document.getElementById('sz_mileage').textContent = parseFloat(data[e.target.value][1]) + 'km'; 
-                document.getElementById('hk_mileage').textContent = parseFloat(data[e.target.value][2]) + 'km'; 
+
+ 
+                document.getElementById('gz_mileage').textContent = data[parseFloat(e.target.value)][0] + ' km'; 
+                document.getElementById('sz_mileage').textContent = data[parseFloat(e.target.value)][1] + ' km'; 
+                document.getElementById('hk_mileage').textContent = data[parseFloat(e.target.value)][2] + ' km'; 
                 
                 map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('stations_label', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('Subway_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('Subway_mousedetect', ['<=', 'time', parseInt(e.target.value)]);
+                // map.setFilter('Subway_lines_hoverlight', ['<=', 'time', parseInt(e.target.value)]);  
+
                 map.setFilter('IntercityRail_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('IntercityRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('ICR_stations_label', ['<=', 'time', parseInt(e.target.value)]);
+
+
                 map.setFilter('HighspeedRail_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('HighspeedRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('HSR_stations_label', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('HighspeedRail_lines_highlight', ['<=', 'time', parseInt(e.target.value)]);
+                map.setFilter('HSR_mousedetect', ['<=', 'time', parseInt(e.target.value)]);
                 });
         
         
@@ -537,9 +590,15 @@ function showSliderValue() {
             if (map.getLayoutProperty('Subway_test', 'visibility') === 'visible') {
             map.setLayoutProperty('Subway_test', 'visibility', 'none');
             map.setLayoutProperty('Subway_stations_test', 'visibility', 'none')
+            map.setLayoutProperty('Subway_mousedetect', 'visibility', 'none')
+            // set id='map-overlay-mid' to none
+            document.getElementById('miles').style.display = 'none';
         } else {
             map.setLayoutProperty('Subway_test','visibility','visible');
             map.setLayoutProperty('Subway_stations_test', 'visibility', 'visible')
+            map.setLayoutProperty('Subway_mousedetect', 'visibility', 'visible')
+            document.getElementById('miles').style.display = 'block';
+
         } 
         }); 
 
@@ -562,9 +621,13 @@ function showSliderValue() {
             if (map.getLayoutProperty('HighspeedRail_test', 'visibility') === 'visible') {
             map.setLayoutProperty('HighspeedRail_test', 'visibility', 'none');
             map.setLayoutProperty('HighspeedRail_stations_test', 'visibility', 'none');
+            map.setLayoutProperty('HighspeedRail_lines_highlight', 'visibility', 'none');
+            map.setLayoutProperty('HSR_mousedetect', 'visibility', 'none');
         } else {
             map.setLayoutProperty('HighspeedRail_test','visibility','visible');
             map.setLayoutProperty('HighspeedRail_stations_test','visibility','visible');
+            map.setLayoutProperty('HighspeedRail_lines_highlight','visibility','visible');
+            map.setLayoutProperty('HSR_mousedetect','visibility','visible');
         } 
         }); 
 
@@ -587,7 +650,7 @@ function showSliderValue() {
                     
                     // Copy coordinates of the mouse.
                     const coordinates = e.lngLat;
-                    const description = "<strong>" + e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
+                    const description = "<strong>" + e.features[0].properties.name_en + ' '+ e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
                     // over the copy being pointed to.
@@ -607,7 +670,7 @@ function showSliderValue() {
         }
     };
 
-        var ids = ['Subway_mousedetect', 'IntercityRail_test', 'HighspeedRail_test'];
+        var ids = ['Subway_mousedetect', 'IntercityRail_test', 'HSR_mousedetect'];
         processPopup(ids);
 
         
@@ -646,12 +709,12 @@ function showSliderValue() {
         map.setFilter('IntercityRail_lines_highlight', ['==','name','empty']);
     });
 
-    map.on('mouseenter', 'HighspeedRail_test', (e) => {                    
+    map.on('mouseenter', 'HSR_mousedetect', (e) => {                    
         // Highlight the subway line
         map.setFilter('HighspeedRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
     });                
     // when mouse leaves the layer, update the filter so no features are highlighted
-    map.on('mouseleave', 'HighspeedRail_test', () => {
+    map.on('mouseleave', 'HSR_mousedetect', () => {
         map.setFilter('HighspeedRail_lines_highlight', ['==','name','empty']);
     });
 
