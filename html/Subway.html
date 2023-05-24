@@ -29,13 +29,13 @@
          
 </div>
 </div>
-<input type="file" id="file" name="file">
+
 <div class='map-overlay-mid'> 
     <div id="miles"> <p> <strong>Metro Mileage</strong>  </p>
     <table >
         <tr>
-            <th>City</th>
-            <th>Miles</th>
+            <td><b>City</b></td>
+            <td><b>Length</b></td>
         </tr>
         <tr>
             <td>Guangzhou</td>
@@ -53,16 +53,20 @@
     </div>
 </div>   
 
+<!-- <input type="file" id="file" name="file"> -->
+
 <div class='map-overlay-bottom'>
 
     <div class='button'>
     <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro on/off</span></button>
     <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail on/off</span></button>
     <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail on/off</span></button>
+    <button class="button-57-mono" role="button" id="autoplay"><span class="text">Autoplay</span><span>Autoplay On/Off</span></button>
+
    
     <!-- <table> -->
     <tr><td><p class="cityfly"> Zoom to:   
-        <a href="#" class="citylink" id="gz">Guangzhou&Foshan</a> &nbsp;
+        <a href="#" class="citylink" id="gz">Guangzhou</a> &nbsp;
         <a href="#" class="citylink" id="sz">Shenzhen</a> &nbsp;
         <a href="#" class="citylink" id="hk">Hongkong</a> &nbsp;
         <a href="#" class="citylink" id="mc">Macao</a></p>
@@ -72,10 +76,10 @@
 
     <div class="container">
   
-  <div class="range-slider">
-    <span id="year" class="rs-label">2030</span>
-    <input id="slider" class="rs-range" type="range" value="2030" min="1980" max="2030">
-  </div>
+        <div class="range-slider">
+        <span id="year" class="rs-label">2030</span>
+        <input id="slider" class="rs-range" type="range" value="2030" min="1980" max="2030">
+        </div>
     </div>
     
     <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">Amap</a>, <a href="https://github.com/gboeing/osmnx">OSM</a>, <a href="https://github.com/GZUPA/Subway-traffic-data-set-of-mainland-China">GZUPA</a> <br> Note: Railway lines after 2023 are not shown in the map. Metro mileage data from government planning documents and is for illustrative use only. </p> 
@@ -84,7 +88,7 @@
 </div>
     
 <script>
-    
+    // the year variable is used to control the year of the map
     var rangeSlider = document.getElementById("slider");
     var rangeBullet = document.getElementById("year");
 
@@ -113,10 +117,6 @@ function showSliderValue() {
     
     map.addControl(new mapboxgl.NavigationControl());
 
-
-
-
-
     map.on('load', function() {
         
         const layers = map.getStyle().layers;
@@ -130,6 +130,7 @@ function showSliderValue() {
         }
        
         map.addLayer({
+            // GBA base map
             id: 'bayarea',
                     type: 'line',
                     source: {
@@ -150,7 +151,7 @@ function showSliderValue() {
             
         }); 
 
-
+    // Three railway lines layers 
         map.addLayer({
                     id: 'Subway_test',
                     type: 'line',
@@ -207,7 +208,7 @@ function showSliderValue() {
                   },
                       firstSymbolId   );
 
-// add a invisible layer for mouse detect
+    // add two invisible layers for mouse detect, so that the mouse can detect a wider offset of drawing lines
      map.addLayer({
                     id: 'Subway_mousedetect',
                     type: 'line',
@@ -224,7 +225,6 @@ function showSliderValue() {
                         'line-opacity': 0,
                         'line-width': 15
                     },
-                // filter: ['==','name','empty']
                   },
                       firstSymbolId   
                     );
@@ -246,8 +246,9 @@ function showSliderValue() {
                     },
                   },
                       firstSymbolId   );      
-// subway stations
-            // Add the proportional circle layer to the map
+
+// stations layers and add symbol layers for station name labels
+            
             map.addLayer({
                     id: 'Subway_stations_test',
                     type: 'circle',
@@ -285,7 +286,6 @@ function showSliderValue() {
                     },
                 'source-layer': 'Subway_stations_0521-9qvpng', // name of tilesets
                 'layout': {
-                // get the title name from the source's "title" property
                 'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'station']],
                 'text-font': [
                 'Open Sans Semibold',
@@ -325,7 +325,6 @@ function showSliderValue() {
                   },
                       firstSymbolId   );
 
-            // Add IntercityRail stations' name label  
             map.addLayer({
                 'id': 'ICR_stations_label',
                 'type': 'symbol',
@@ -335,7 +334,6 @@ function showSliderValue() {
                     },
                 'source-layer': 'IntercityRail_stations_0523-0wzskw', // name of tilesets
                 'layout': {
-                // get the title name from the source's "title" property
                 'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'name']],
                 'text-font': [
                 'Open Sans Semibold',
@@ -350,7 +348,6 @@ function showSliderValue() {
                 'paint': {'text-color': '#4e4e4e'},
             });  
 
-            // Add the proportional circle layer to the map
             map.addLayer({
                     id: 'HighspeedRail_stations_test',
                     type: 'circle',
@@ -374,6 +371,7 @@ function showSliderValue() {
                             }
                   },
                       firstSymbolId   );
+
             map.addLayer({
                 'id': 'HSR_stations_label',
                 'type': 'symbol',
@@ -383,7 +381,6 @@ function showSliderValue() {
                     },
                 'source-layer': 'HSR_stations_0523-763n9x', // name of tilesets
                 'layout': {
-                // get the title name from the source's "title" property
                 'text-field': ['concat', ['get', 'name_en'], '\n', ['get', 'name']],
                 'text-font': [
                 'Open Sans Semibold',
@@ -399,7 +396,7 @@ function showSliderValue() {
                 'paint': {'text-color': '#4e4e4e'},
             }); 
 
-//  Hoverlight layer
+//  Hoverlight layers, which are empty initially
             map.addLayer({
                 id: 'Subway_lines_hoverlight',  
                 type: 'line',
@@ -461,7 +458,7 @@ function showSliderValue() {
                       firstSymbolId   );
 
 
-        // Mileage data 🥲
+        // Mileage data 
         // Notes: shouldn't have space between the comma and the next word!
                 const csvData = `key,guangzhou,shenzhen,Hongkong,gz_stations,sz_stations
 1980,0,0,16,0,0
@@ -523,7 +520,7 @@ function showSliderValue() {
                 
                 // Parse the CSV data
                 const parsedData = Papa.parse(csvData, { header: true }).data;
-                console.log(parsedData);
+                // console.log(parsedData);
                 // Convert to dictionary
                 const dictionary = {};
                 parsedData.forEach(row => {
@@ -533,42 +530,27 @@ function showSliderValue() {
                 });
 
                 const data = dictionary;
-// // danfo.js
-// const dfd = require("danfojs-node")
-
-// dfd.readCSV("./data.csv") //assumes file is in CWD
-//   .then(df => {
-  
-//    df.head().print()
-
-//   }).catch(err=>{
-//      console.log(err);
-//   })
-//   console.log(df)
 
 
-    // inputFile.addEventListener("change", async () => {
-    //     const csvFile = inputFile.files[0]
-    //     dfd.readCSV(csvFile).then((df) => {
-    //         df.print()
-    //     })
-    // })
-
-            // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
+    // Assign an event listner to the slider so that the setYear function runs when the user changes the slider
             document.getElementById('slider').addEventListener('input', function(e) {
+                for (var i = 1; i < 99999; i++)
+                    window.clearInterval(i);
+                
+                autoplay_on = false;
 
                 document.getElementById('year').textContent = parseInt(e.target.value); 
 
- 
+                // control the metromileage data, back to 1980 data when click the autoplay button
                 document.getElementById('gz_mileage').textContent = data[parseFloat(e.target.value)][0] + ' km'; 
                 document.getElementById('sz_mileage').textContent = data[parseFloat(e.target.value)][1] + ' km'; 
                 document.getElementById('hk_mileage').textContent = data[parseFloat(e.target.value)][2] + ' km'; 
                 
+                // control the railway layers
                 map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('stations_label', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('Subway_test', ['<=', 'time', parseInt(e.target.value)]);
-                map.setFilter('Subway_mousedetect', ['<=', 'time', parseInt(e.target.value)]);
-                // map.setFilter('Subway_lines_hoverlight', ['<=', 'time', parseInt(e.target.value)]);  
+                map.setFilter('Subway_mousedetect', ['<=', 'time', parseInt(e.target.value)]);  
 
                 map.setFilter('IntercityRail_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('IntercityRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
@@ -578,15 +560,13 @@ function showSliderValue() {
                 map.setFilter('HighspeedRail_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('HighspeedRail_stations_test', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('HSR_stations_label', ['<=', 'time', parseInt(e.target.value)]);
-                map.setFilter('HighspeedRail_lines_highlight', ['<=', 'time', parseInt(e.target.value)]);
                 map.setFilter('HSR_mousedetect', ['<=', 'time', parseInt(e.target.value)]);
                 });
         
         
         
-        
+    // three buttons function to control the hidden and display of layers
         document.getElementById('metro').addEventListener('click', () => {
-            
             if (map.getLayoutProperty('Subway_test', 'visibility') === 'visible') {
             map.setLayoutProperty('Subway_test', 'visibility', 'none');
             map.setLayoutProperty('Subway_stations_test', 'visibility', 'none')
@@ -632,6 +612,7 @@ function showSliderValue() {
         }); 
 
 // Hover Popup 
+    // there are three layers that need to be processed, so I write a function to simplify the code.
     function processPopup(elementIds) {
         for (var i = 0; i < elementIds.length; i++) {
             var id = elementIds[i]
@@ -648,7 +629,7 @@ function showSliderValue() {
                     // Change the cursor style as a UI indicator.
                     map.getCanvas().style.cursor = 'pointer';
                     
-                    // Copy coordinates of the mouse.
+                    // Get the coordinates of the mouse.
                     const coordinates = e.lngLat;
                     const description = "<strong>" + e.features[0].properties.name_en + ' '+ e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
                     // Ensure that if the map is zoomed out such that multiple
@@ -665,8 +646,10 @@ function showSliderValue() {
                 
                 map.on('mouseleave', id, () => {
                     map.getCanvas().style.cursor = '';
-                    popup.remove();
-                }); 
+                    setTimeout(function() {
+                        popup.remove();
+                        }, 500);
+                            }); 
         }
     };
 
@@ -699,7 +682,8 @@ function showSliderValue() {
     // var ids2 = ['Subway_lines_hoverlight','IntercityRail_lines_highlight','HighspeedRail_lines_highlight'];
     processHL(ids1, ids2);
        
-    
+    // the function didn't work well here, so I write the code separately
+    // Intercity Rail
     map.on('mouseenter', 'IntercityRail_test', (e) => {                    
         // Highlight the subway line
         map.setFilter('IntercityRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
@@ -709,8 +693,8 @@ function showSliderValue() {
         map.setFilter('IntercityRail_lines_highlight', ['==','name','empty']);
     });
 
+    // HighSpeed Rail
     map.on('mouseenter', 'HSR_mousedetect', (e) => {                    
-        // Highlight the subway line
         map.setFilter('HighspeedRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
     });                
     // when mouse leaves the layer, update the filter so no features are highlighted
@@ -718,9 +702,73 @@ function showSliderValue() {
         map.setFilter('HighspeedRail_lines_highlight', ['==','name','empty']);
     });
 
+
+// Autoplay function
+    autoplay_on = false;
+        
+    document.getElementById("autoplay").addEventListener("click", () => {
+        
+        if (autoplay_on == true) {
+            autoplay_on = false;
+            for (var i = 1; i < 99999; i++)
+            window.clearInterval(i);
+        }else{
+            autoplay_on = true;
+            autoplay = setInterval(function(){
+                if (document.getElementById("slider").value == 2030) {
+                    // the year value is 2030 at the beginning, then step back to 1980
+                    document.getElementById("slider").stepDown(50);
+                    document.getElementById('year').textContent = document.getElementById("slider").value;
+                    document.getElementById("year").style.left = ((document.getElementById("slider").value - 2030) * 1.825 + 95 + "%");
+                    
+                    map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('Subway_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('Subway_mousedetect', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    
+                    map.setFilter('IntercityRail_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('IntercityRail_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('ICR_stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+
+                    map.setFilter('HighspeedRail_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('HighspeedRail_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('HSR_stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    // map.setFilter('HSR_mousedetect', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    
+                    
+                } else {
+                    document.getElementById("slider").stepUp(1);
+                    document.getElementById('year').textContent = document.getElementById("slider").value;   
+                    document.getElementById("year").style.left = ((document.getElementById("slider").value - 2030) * 1.825 + 95 + "%");
+                                        
+                    // control the metromileage data
+                    document.getElementById('gz_mileage').textContent = data[parseFloat(document.getElementById("slider").value)][0] + ' km'; 
+                    document.getElementById('sz_mileage').textContent = data[parseFloat(document.getElementById("slider").value)][1] + ' km'; 
+                    document.getElementById('hk_mileage').textContent = data[parseFloat(document.getElementById("slider").value)][2] + ' km'; 
+
+                    map.setFilter('Subway_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('Subway_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('Subway_mousedetect', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    
+                    map.setFilter('IntercityRail_test', ['<=', 'time', parseInt(document.getElementById("slider").value)]);
+                    map.setFilter('IntercityRail_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('ICR_stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+
+                    map.setFilter('HighspeedRail_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('HighspeedRail_stations_test', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('HSR_stations_label', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    // map.setFilter('HighspeedRail_lines_highlight', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    map.setFilter('HSR_mousedetect', ['<=', 'time', parseInt(document.getElementById("slider").value) ]);
+                    
+                    
+                }
+            }, 800);
+        }
+    });
 });
 
-// FLY TO
+// FLY TO function
 // Event listener for the zoom to buttons created using a for loop and switch case statement to set lat and long
 var x = document.getElementsByClassName('citylink');
 var i;
@@ -731,7 +779,7 @@ var i;
 
 				switch(e.target.id) {
 					case "gz": long=113.258057; lat=23.127731; break;
-					case "sz": long=114.03; lat=22.550611; break;
+					case "sz": long=114.04; lat=22.591824; break;
 					case "hk": long=114.158936; lat=22.281472; break;
 					case "mc": long=113.560867; lat=22.161653; break;
 				}

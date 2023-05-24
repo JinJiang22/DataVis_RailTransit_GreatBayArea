@@ -1,5 +1,7 @@
 <style>
-    body { margin:0; padding:0; }
+    body { margin:0; padding:0; 
+      display: flex; flex-direction: column;
+    }
      #map { position:absolute; top:0; bottom:0; left: 0; width:100%; }
 
 .map-overlay {
@@ -23,30 +25,18 @@
     margin-bottom: 10px;
 }
 
-.map-overlay-mid {
-    position: absolute;
-    /* width: 10%; */
-    height: 10%;
-    bottom: 20%;
-    left: 0;
-
-    background: rgba(0, 0, 0, 0);
-    border-radius: 3px;
-    padding: 30px;
-    margin-bottom: 0px;
-    display: flex;
-}
-
 .map-overlay-bottom {
-    position: absolute;
-    width: 100%;
-    height: 10%;
+    position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+
+    width: 100%;
+    height: 20vh;
     
     background: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    padding: 30px;
+    padding: 10px;
     margin-bottom: 0px;
     display: flex;
     
@@ -57,19 +47,19 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    width:50%;
+    width:60%;
 }
 
 
 .map-overlay-bottom .range-slider {
     margin-top: 0vh;
-    
 }
+
 .map-overlay-bottom .rs-range {
     margin-top: 0px;
     margin-left: 20px;
     margin-right: 20px;
-    width: 600px;
+    width: 50vw;  
     -webkit-appearance: none;
    
     &:focus {
@@ -133,7 +123,20 @@
     
 }
 
+.map-overlay-mid {
+  position: absolute;
+  /* width: 10%; */
+  /* height: 10%; */
+  bottom: 20vh;
+  left: 0;
 
+  background: rgba(0, 0, 0, 0);
+  border-radius: 3px;
+  padding: 30px;
+  margin-bottom: 0px;
+  display: flex;
+  font-family: 'Optima';
+}
 
 .map-overlay table {
     border: none;
@@ -170,12 +173,14 @@
     cursor: ew-resize;
 }
 
-p.credit {
+.map-overlay-bottom p.credit {
    margin: 0;
    padding: 0;
    font-family: 'Optima';
-   width: 340px;
+   width: 35%;
+   padding: auto;
    margin-top: 5px;
+   margin-right: 10px;
 }
 
 .mapboxgl-popup {
@@ -206,12 +211,16 @@ p.credit {
 }
 
 .map-overlay-bottom .cityfly {
+  position: absolute;
+  border-bottom: 1px;
+  border: 1px;
     font: 14px;
     font-family: 'Optima';
+    z-index: 1;
 }
 
 
-/* CSS */
+/* button style*/
 .button-57 {
   position: relative;
   overflow: hidden;
@@ -279,7 +288,7 @@ p.credit {
   transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
 }
 
-  /*orange button  */
+/*orange button  */
 .button-57-orange {
     position: relative;
     overflow: hidden;
@@ -346,7 +355,7 @@ p.credit {
 }    
 
  /*red button  */
- .button-57-red {
+.button-57-red {
   position: relative;
   overflow: hidden;
   border: 1px solid #18181a;
@@ -410,4 +419,72 @@ transform: translateX(-50%) translateY(-100%);
 opacity: 1;
 transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
 }    
+
+
+ /*mono button  */
+ .button-57-mono {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #18181a;
+  color: black;
+  display: inline-block;
+  font-family: 'Optima';
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 15px;
+  padding: 18px 18px 17px;
+  text-decoration: none;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  user-select: none;
+  margin-top: 5px;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-57-mono span:first-child {
+  position: relative;
+  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 10;
+}
+
+.button-57-mono span:last-child {
+  /* the font color of the last element: 点击后texts"Metro/... on"的颜色*/
+  color: rgb(255, 255, 255);  
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 100;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(225%) translateX(-50%);
+  height: 14px;
+  line-height: 13px;
+}
+.button-57-mono:after {
+content: "";
+position: absolute;
+bottom: -50%;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: black;
+transform-origin: bottom center;
+transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
+transform: skewY(9.3deg) scaleY(0);
+z-index: 50;
+}
+.button-57-mono:hover:after {
+transform-origin: bottom center;
+transform: skewY(9.3deg) scaleY(2);
+}
+
+.button-57-mono:hover span:last-child {
+transform: translateX(-50%) translateY(-100%);
+opacity: 1;
+transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
+}    
+
 </style>
