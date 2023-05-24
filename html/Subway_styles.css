@@ -32,22 +32,26 @@
     right: 0;
 
     width: 100%;
-    height: 20vh;
+    height: 18vh;
     
     background: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 0px;
     display: flex;
-    
 }
+
+.map-overlay-bottom .button {
+  width: 32%;
+}
+
 
 .map-overlay-bottom .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    width:60%;
+    width: 60%;
 }
 
 
@@ -127,7 +131,7 @@
   position: absolute;
   /* width: 10%; */
   /* height: 10%; */
-  bottom: 20vh;
+  bottom: 18vh;
   left: 0;
 
   background: rgba(0, 0, 0, 0);
@@ -177,10 +181,11 @@
    margin: 0;
    padding: 0;
    font-family: 'Optima';
-   width: 35%;
+   font-size: 12px;
+   width: 24vw;
    padding: auto;
-   margin-top: 5px;
-   margin-right: 10px;
+   margin-top: 8px;
+   margin-right: 12px;
 }
 
 .mapboxgl-popup {
@@ -425,8 +430,8 @@ transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
  .button-57-mono {
   position: relative;
   overflow: hidden;
-  border: 1px solid #18181a;
-  color: black;
+  border: 1px dashed #ffffff;
+  color: white;
   display: inline-block;
   font-family: 'Optima';
   font-size: 15px;
@@ -435,7 +440,7 @@ transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
   padding: 18px 18px 17px;
   text-decoration: none;
   cursor: pointer;
-  background: rgb(255, 255, 255);
+  background: rgb(255, 255, 255,0);
   user-select: none;
   margin-top: 5px;
   -webkit-user-select: none;
@@ -450,7 +455,7 @@ transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
 
 .button-57-mono span:last-child {
   /* the font color of the last element: 点击后texts"Metro/... on"的颜色*/
-  color: rgb(255, 255, 255);  
+  color: rgb(0, 0, 0);  
   display: block;
   position: absolute;
   bottom: 0;
@@ -470,7 +475,7 @@ bottom: -50%;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: black;
+background-color: rgba(255, 255, 255, 1);
 transform-origin: bottom center;
 transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
 transform: skewY(9.3deg) scaleY(0);
