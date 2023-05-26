@@ -58,18 +58,14 @@
 <div class='map-overlay-bottom'>
 
     <div class='button'>
-    <button class="button-57" role="button" id="metro"><span class="text">Metro</span><span>Metro on/off</span></button>
+    <button class="button-57-blue" role="button" id="metro"><span class="text">Metro</span><span>Metro on/off</span></button>
     <button class="button-57-orange" role="button" id="inter-city"><span class="text">Inter-City Rail</span><span>Inter-City Rail on/off</span></button>
     <button class="button-57-red" role="button" id="CRH"><span class="text">High-Speed Rail</span><span>High-Speed Rail on/off</span></button>
+    <button class="button-57" role="button" id="autoplay"><span class="text">Autoplay</span><span>Autoplay On/Off</span></button>
+    <button class="button-57" role="button" id="gz"><span class="text">Guangzhou</span><span>Fly to Guangzhou</span></button>
+    <button class="button-57" role="button" id="sz"><span class="text">Shenzhen</span><span>Fly to Shenzhen</span></button>
+    <button class="button-57" role="button" id="hk"><span class="text">Hongkong</span><span>Fly to Hongkong</span></button>
    
-    <!-- <table> -->
-    <tr><td><p class="cityfly"> Zoom to:   
-        <a href="#" class="citylink" id="gz">Guangzhou</a> &nbsp;
-        <a href="#" class="citylink" id="sz">Shenzhen</a> &nbsp;
-        <a href="#" class="citylink" id="hk">Hongkong</a> &nbsp;
-        <a href="#" class="citylink" id="mc">Macao</a></p>
-     </td></tr>
-    <!-- </table> -->
     </div>
 
     <div class="container">
@@ -79,11 +75,10 @@
         <input id="slider" class="rs-range" type="range" value="2030" min="1980" max="2030">
         </div>
         
-    <button class="button-57-mono" role="button" id="autoplay"><span class="text">Autoplay</span><span>Autoplay On/Off</span></button>
-
     </div>
     
-    <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">Amap</a>, <a href="https://github.com/gboeing/osmnx">OSM</a>, <a href="https://github.com/GZUPA/Subway-traffic-data-set-of-mainland-China">GZUPA</a> <br> Note: Railway lines after 2023 are not shown in the map. Metro mileage data from government planning documents and is for illustrative use only. </p> 
+    <p class="credit"> Interactive map for the railway transportation system of the Greater Bay Area including <span style="color: blue">metro</span>, <span style="color: orange">intercity railways</span> and <span style="color: red">high-speed railways</span>. <br> Data Sources: <a href="https://lbs.amap.com/news/js_mou">Amap</a>, <a href="https://github.com/gboeing/osmnx">OSM</a>, <a href="https://github.com/GZUPA/Subway-traffic-data-set-of-mainland-China">GZUPA</a> 
+        <br> Note: Railway lines after 2023 are not shown in the map. Metro mileage data for illustrative use only. </p> 
         
        
 </div>
@@ -195,9 +190,9 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.7hzucxk7' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
+                    'source-layer': 'HSR_0525-7bs0af', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -234,9 +229,9 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.7hzucxk7' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
+                    'source-layer': 'HSR_0525-7bs0af', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -444,9 +439,9 @@ function showSliderValue() {
                     type: 'line',
                     source: {
                       type: 'vector',
-                      url: 'mapbox://dantechen0825.4uud57mn' // Your Mapbox tileset Map ID
+                      url: 'mapbox://dantechen0825.7hzucxk7' // Your Mapbox tileset Map ID
                     },
-                    'source-layer': 'HSR_0523-4orw6f', // name of tilesets
+                    'source-layer': 'HSR_0525-7bs0af', // name of tilesets
                     'layout': {
                         'visibility': 'visible'
                     },
@@ -612,97 +607,86 @@ function showSliderValue() {
         } 
         }); 
 
-// Hover Popup 
-    // there are three layers that need to be processed, so I write a function to simplify the code.
-    function processPopup(elementIds) {
-        for (var i = 0; i < elementIds.length; i++) {
-            var id = elementIds[i]
-
+// Hover Popup and Highlight
             // Perform operations on the element
             // Create a popup for subway line
             const popup = new mapboxgl.Popup({
                     closeButton: false,
                     closeOnClick: false
                 });
+// 1               
+            map.on('mouseenter', 'Subway_mousedetect', (e) => {
+                    
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+                // Get the coordinates of the mouse.
+                const coordinates = e.lngLat;
+                const description = "<strong>" + e.features[0].properties.name_en + ' '+ e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
                 
-                map.on('mouseenter', id, (e) => {
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(coordinates).setHTML(description).addTo(map);
+
+                map.setFilter('Subway_lines_hoverlight', ['==','name',e.features[0].properties.name]); 
+            });  
+
+            map.on('mouseleave', 'Subway_mousedetect', () => {
+                map.getCanvas().style.cursor = '';
+                // setTimeout(function() {
+                    popup.remove();
+                    // }, 1000);
+                map.setFilter('Subway_lines_hoverlight', ['==','name','empty']);
+                        }); 
+
+// 2
+            map.on('mouseenter', 'IntercityRail_test', (e) => {
                     
                     // Change the cursor style as a UI indicator.
                     map.getCanvas().style.cursor = 'pointer';
-                    
                     // Get the coordinates of the mouse.
                     const coordinates = e.lngLat;
                     const description = "<strong>" + e.features[0].properties.name_en + ' '+ e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
-                    // Ensure that if the map is zoomed out such that multiple
-                    // copies of the feature are visible, the popup appears
-                    // over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
-                    
-                    // Populate the popup and set its coordinates
-                    // based on the feature found.
+
                     popup.setLngLat(coordinates).setHTML(description).addTo(map);
-                });
+
+                    map.setFilter('IntercityRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
+            });  
                 
-                map.on('mouseleave', id, () => {
-                    map.getCanvas().style.cursor = '';
-                    setTimeout(function() {
-                        popup.remove();
-                        }, 500);
-                            }); 
-        }
-    };
+            map.on('mouseleave', 'IntercityRail_test', () => {
+                map.getCanvas().style.cursor = '';
+                // setTimeout(function() {
+                    popup.remove();
+                    // }, 1000);
+                map.setFilter('IntercityRail_lines_highlight', ['==','name','empty']);
+                        }); 
 
-        var ids = ['Subway_mousedetect', 'IntercityRail_test', 'HSR_mousedetect'];
-        processPopup(ids);
-
-        
-// Hover Highlight
-    function processHL(elementIds1, elementIds2) {
-        for (var i = 0; i < elementIds1.length; i++) {
-                var id1 = elementIds1[i];
-                var id2 = elementIds2[i]
-        
-            map.on('mouseenter', id1, (e) => {
-            // Highlight the subway line
-                map.setFilter(id2, ['==','name',e.features[0].properties.name]); 
-            });
+// 3 HSR
+            map.on('mouseenter', 'HSR_mousedetect', (e) => {        
                     
-            // when mouse leaves the layer, update the filter so no features are highlighted
-            map.on('mouseleave', id1, () => {
-                map.setFilter(id2, ['==','name','empty']);
-            });
-    
-        }
-    };
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+                    // Get the coordinates of the mouse.
+                    const coordinates = e.lngLat;
+                    const description = "<strong>" + e.features[0].properties.name_en + ' '+ e.features[0].properties.name + "</strong>" + "<br> This segment of railway started operating in "  + e.features[0].properties.time + ".";
 
-    var ids1 = ['Subway_mousedetect'];
-    // var ids1 = ['Subway_test', 'IntercityRail_test', 'HighspeedRail_test'];
-    var ids2 = ['Subway_lines_hoverlight'];
-    // var ids2 = ['Subway_lines_hoverlight','IntercityRail_lines_highlight','HighspeedRail_lines_highlight'];
-    processHL(ids1, ids2);
-       
-    // the function didn't work well here, so I write the code separately
-    // Intercity Rail
-    map.on('mouseenter', 'IntercityRail_test', (e) => {                    
-        // Highlight the subway line
-        map.setFilter('IntercityRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
-    });               
-    // when mouse leaves the layer, update the filter so no features are highlighted
-    map.on('mouseleave', 'IntercityRail_test', () => {
-        map.setFilter('IntercityRail_lines_highlight', ['==','name','empty']);
-    });
+                    popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
-    // HighSpeed Rail
-    map.on('mouseenter', 'HSR_mousedetect', (e) => {                    
-        map.setFilter('HighspeedRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
-    });                
-    // when mouse leaves the layer, update the filter so no features are highlighted
-    map.on('mouseleave', 'HSR_mousedetect', () => {
-        map.setFilter('HighspeedRail_lines_highlight', ['==','name','empty']);
-    });
-
+                    map.setFilter('HighspeedRail_lines_highlight', ['==','name',e.features[0].properties.name]); 
+            });  
+                
+            map.on('mouseleave', 'HSR_mousedetect', () => {
+                map.getCanvas().style.cursor = '';
+                // setTimeout(function() {
+                    popup.remove();
+                    // }, 2000);
+                map.setFilter('HighspeedRail_lines_highlight', ['==','name','empty']);
+                        }); 
 
 // Autoplay function
     autoplay_on = false;
@@ -771,28 +755,60 @@ function showSliderValue() {
 
 // FLY TO function
 // Event listener for the zoom to buttons created using a for loop and switch case statement to set lat and long
-var x = document.getElementsByClassName('citylink');
-var i;
-		for (i = 0; i < x.length; i++) {
-			x[i].addEventListener('click', function(e) {
+// var x = document.getElementsByClassName('citylink');
+// var i;
+// 		for (i = 0; i < x.length; i++) {
+// 			x[i].addEventListener('click', function(e) {
 
-				var lat,long;
+// 				var lat,long;
 
-				switch(e.target.id) {
-					case "gz": long=113.258057; lat=23.127731; break;
-					case "sz": long=114.04; lat=22.591824; break;
-					case "hk": long=114.158936; lat=22.281472; break;
-					case "mc": long=113.560867; lat=22.161653; break;
-				}
+// 				switch(e.target.id) {
+// 					case "gz": long=113.258057; lat=23.127731; break;
+// 					case "sz": long=114.04; lat=22.591824; break;
+// 					case "hk": long=114.158936; lat=22.281472; break;
+// 					case "mc": long=113.560867; lat=22.161653; break;
+// 				}
 
-				map.flyTo({
-					center: [long,lat],
-					zoom: 10,
-					speed: 0.5,
-					});
-			});
-		}
+// 				map.flyTo({
+// 					center: [long,lat],
+// 					zoom: 10,
+// 					speed: 0.5,
+// 					});
+// 			});
+// 		}
+        document.getElementById('gz').addEventListener('click', () => {
+            map.flyTo({
+                center: [113.3, 23.1],  
+                essential: true,
+                speed: 0.25,
+                zoom: 11,
+                bearing: 0,
+                pitch: 0
+            })
+        });  // fly to Guangzhou when click the button
 
+        document.getElementById('sz').addEventListener('click', () => {
+            map.flyTo({
+                center: [114.03, 22.53],  
+                essential: true,
+                speed: 0.25,
+                zoom: 11,
+                bearing: 0,
+                pitch: 0
+            })
+        });  // fly to Shenzhen when click the button
+            
+        document.getElementById('hk').addEventListener('click', () => {
+            map.flyTo({
+                center: [114.2, 22.3],  
+                essential: true,
+                speed: 0.25,
+                zoom: 11,
+                bearing: 0,
+                pitch: 0
+            })
+        });  // fly to Shenzhen when click the button
+       
 </script>   
     
 
