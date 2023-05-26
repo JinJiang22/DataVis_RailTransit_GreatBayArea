@@ -1,6 +1,6 @@
 # DataVis_RailTransit_GreaterBayArea
 Groupwork of CASA0003 coursework  
-**Explore [the Urbanisation and Railway System in the Greater Bay Area](https://dantechen0825.github.io/GreaterBayArea/)**
+**A lot to Explore [the Urbanisation and Railway System in the Greater Bay Area](https://dantechen0825.github.io/GreaterBayArea/)**
 
 Our data for railway map includes Geojson datasets on subway, High-Speed Railways and Intercity railways in the Greater Bay Area of China as of 2023.5, including the start of operation attributes, data collected from OSM, Gaode Map API, and [GZUPA](https://github.com/GZUPA/Subway-traffic-data-set-of-mainland-China#subway-traffic-data-set-of-mainland-china).
 
